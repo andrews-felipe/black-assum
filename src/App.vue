@@ -21,12 +21,21 @@
                     v-bind:key="prefix"
                   >{{ prefix }}</li>
                 </ul>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="prefixo"
-                  placeholder="Degite o prefixo"
-                />
+                <div class="input-group">
+                  <input
+                    @keyup.enter="addPrefix(prefix)"
+                    class="form-control"
+                    type="text"
+                    name="prefixo"
+                    placeholder="Degite o Prefixo"
+                    v-model="prefix"
+                  />
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-info" v-on:click="addPrefix(prefix)">
+                      <span class="fa fa-plus"></span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -44,12 +53,21 @@
                     v-bind:key="sufix"
                   >{{ sufix }}</li>
                 </ul>
-                <input
-                  class="form-control"
-                  type="text"
-                  name="prefixo"
-                  placeholder="Degite o Sufixo"
-                />
+                <div class="input-group">
+                  <input
+                    @keyup.enter="addSufix(sufix)"
+                    class="form-control"
+                    type="text"
+                    name="prefixo"
+                    placeholder="Degite o Sufixo"
+                    v-model="sufix"
+                  />
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-info" v-on:click="addSufix(sufix)">
+                      <span class="fa fa-plus"></span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -57,9 +75,9 @@
         <br />
         <div>
           <h5>
-              Domínios
-              <span class="badge badge-info">{{domains.length}}</span>
-            </h5>
+            Domínios
+            <span class="badge badge-info">{{domains.length}}</span>
+          </h5>
           <div class="card">
             <div class="card-body">
               <ul class="list-group">
@@ -83,12 +101,36 @@ import "font-awesome/css/font-awesome.css";
 
 export default {
   name: "app",
+
   data: function() {
     return {
-      prefixes: ["Air", "Get", "Flight"],
+      //Variables
+      prefix: "",
+      sufix: "",
+      prefixes: ["Air", "Get", "Fligh1"],
       sufixes: ["Orbe", "Flut", "Bower"],
       domains: ["AirFlut", "GetBower", "FlightOrbe"]
     };
+  },
+  methods: {
+    addPrefix(prefix) {
+      this.prefixes.push(prefix);
+      this.prefix = "";
+      this.gen();
+    },
+    addSufix(sufix) {
+      this.sufixes.push(sufix);
+      this.sufix = "";
+      this.gen();
+    },
+    gen() {
+      this.domains = [];
+      for (const prefix of this.prefixes) {
+        for (const sufix of this.sufixes) {
+          this.domains.push(`${prefix} ${sufix}`);
+        }
+      }
+    }
   }
 };
 </script>
